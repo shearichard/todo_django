@@ -20,6 +20,7 @@ from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 
 from todo.views import TodoItemViewSet
+from todo.views import register
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register("todos", TodoItemViewSet)
@@ -28,4 +29,5 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth-token/', obtain_auth_token),
     url(r'^admin/', admin.site.urls),
+    url(r'^api-register/', register),
 ]
