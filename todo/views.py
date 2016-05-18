@@ -14,16 +14,21 @@ from rest_framework.permissions import IsAuthenticated
 from .models import TodoItem
 from .serializers import TodoItemSerializer
 from .forms import RegistrationForm
+from .permissions import BelongsToUser
 
 
 class TodoItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows TodoItems to be CRUDed.
     """
-    queryset = TodoItem.objects.all()
     serializer_class = TodoItemSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, BelongsToUser,)
+
+    def get_queryset(self):
+        return TodoItem.objects.filter(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 @require_http_methods(["POST"])
 @csrf_exempt

@@ -23,7 +23,7 @@ from todo.views import TodoItemViewSet
 from todo.views import register
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register("todos", TodoItemViewSet)
+router.register("todos", TodoItemViewSet, base_name="todo")
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
