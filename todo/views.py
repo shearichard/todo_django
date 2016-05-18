@@ -1,3 +1,8 @@
+import json
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
+
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -8,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import TodoItem
 from .serializers import TodoItemSerializer
+from .forms import RegistrationForm
 
 
 class TodoItemViewSet(viewsets.ModelViewSet):
@@ -31,7 +37,7 @@ def register(request):
     the form through a save.
     """
     try:
-        payload = json.loads(request.body)
+        payload = json.loads( request.body.decode('utf-8') )
     except ValueError:
         return JsonResponse({"error": "Unable to parse request body"}, status=400)
 
